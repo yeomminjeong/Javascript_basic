@@ -91,10 +91,12 @@ console.log(Article.publisher);
 Article.printPublisher();
 
 //5. 상속 Inheritance & 다양성
+//생성자 overriding, method overriding
 //a way for one class to extend another class.
 //반복되는 부분, 공통적으로 사용되는 속성 값을 재사용
 class Shape {
   constructor(width, height, color) {
+    //{}
     this.width = width;
     this.height = height;
     this.color = color;
@@ -109,7 +111,15 @@ class Shape {
   }
 }
 
-class Rectangle extends Shape {} //Rectangle class가 Shpae class의 자식 class가 됨.
+class Rectangle extends Shape {
+  constructor(width, height, color) {
+    super(width, height, color);
+    //부모 클래스의 constructor를 가져와야 constructor overriding을 할 수 있음.
+    //부모 클래스는 {}빈 객체를 받아서 this를 할당받는 반면, 상속 클래스는 할당 받는 값이 없기 때문
+    //매개변수 넣기
+    this.name = "Rectangle";
+  }
+} //Rectangle class가 Shpae class의 자식 class가 됨.
 class Triangle extends Shape {
   draw() {
     super.draw(); //부모의 메서드도 나오게 super 키워드를 붙여줌.
@@ -135,3 +145,38 @@ console.log(triangle instanceof Rectangle);
 console.log(triangle instanceof Triangle);
 console.log(triangle instanceof Shape);
 console.log(triangle instanceof Object); //모든 클래스 들은 Object 클래스를 상속한 것.
+
+//7. 클래스와 생성자 함수의 차이
+
+const User_1 = function (name, age) {
+  this.name = name;
+  this.age = age;
+  // this.showName = function () {
+  //   console.log(this.name);
+  // };
+};
+
+User_1.prototype.showName = function () {
+  console.log(this.name);
+}; //생성자 함수를 클래스와 같은 구조로 만드려면 메서드를 직접 프로토타입에 넣어야 함.
+
+const mike = new User_1("Mike", 20);
+//new 를 제거하면 에러이지만 문제 없이 작동함.
+
+class User_2 {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+  showName() {
+    console.log(this.name);
+  }
+}
+//생성자 함수와 달리 클래스에서 메서드는 프로토타입 내부에 저장된다.
+
+const tom = new User_2("Tom", 20);
+//클래스는 new를 제거하면 typeError가 나옴.
+
+for (const p in tom) {
+  console.log(p);
+} //메서드는 프로토타입 내부에 있기 때문에 보여주지 않음. -> hasOwnProperty()를 사용해야함.
