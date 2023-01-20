@@ -31,3 +31,5 @@ console.log(json);
 
 //2. JSON to Object
 //parse(json)
+
+//json 나중에 다시 공부하기
